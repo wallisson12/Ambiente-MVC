@@ -8,9 +8,10 @@ V - View,
 C - Controller.
 
 - Funcionamento:
+View -> <-Controller -> <- Model
 
 - Beneficios:
--  Essa separação de camadas ajuda na organização, separação de responsabilidaes e redução de acoplamento, onde promove o aumento de coesão nas classes do projeto,facilita a manutenção do código e sua reutilização em outros projetos.
+-  Essa separação de camadas ajuda na organização, separação de responsabilidades e redução de acoplamento, onde promove o aumento de coesão nas classes do projeto,facilitando a manutenção do código e sua reutilização em outros projetos.
 
 
 
