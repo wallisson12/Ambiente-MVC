@@ -2,7 +2,10 @@
 Repositorio com configuração base para projetos MVC com Php - Apache - Docker - Mysql - Xdebugger - Composer
 
 <h2>Arquitetura Utilizada</h2>
+- O padrão de arquitetura MVC divide sua aplicação em três camadas, 
+M - Model,V - View, C - Controller.
 
+- Funcionamento:  
 <h2>Ferramentas Utilizadas</h2>
 <ul>
 <li>PHP</li>
