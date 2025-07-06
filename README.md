@@ -12,13 +12,8 @@ Repositório com a configuração base para projetos PHP utilizando o padrão de
   <li>Controller (Controlador): Faz a mediação entre o Model e a View, processando as requisições.</li>
 </ul>
 
-<h2>Funcionamento</h2>
-View -> <-Controller -> <- Model
-
 <h2>Beneficios</h2>
 -  Essa separação de camadas ajuda na organização, separação de responsabilidades e redução de acoplamento, onde promove o aumento de coesão nas classes do projeto,facilitando a manutenção do código e sua reutilização em outros projetos.
-
-
 
 <h2>Ferramentas Utilizadas</h2>
 <ul>
@@ -33,4 +28,7 @@ View -> <-Controller -> <- Model
 <li>.dockerignore</li>
 </ul>
 
+<h2>Funcionamento</h2>
+
+![mvcImage](https://github.com/user-attachments/assets/29c025f4-6965-4bee-aaa2-8dea18cfbfb7)
 
