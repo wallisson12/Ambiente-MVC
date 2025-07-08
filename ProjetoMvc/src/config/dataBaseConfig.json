@@ -1,0 +1,9 @@
+{
+  "dataBase":
+  {
+    "host": "db",
+    "dbname": "banco_teste",
+    "user": "user",
+    "password": "password"
+  }
+}

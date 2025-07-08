@@ -1,10 +1,14 @@
 <?php
-class DataBase
+require_once "BaseDataBase.php";
+class DataBase extends BaseDatabase
 {
 	private static ?DataBase $oInstance = null;
 	private Pdo $oPDO;
+
 	private function __construct(){
-		$this->oPDO = new Pdo('mysql:host=db;dbname=banco_teste', 'user', 'password');
+		parent::__construct();
+		$sDns = 'mysql:'. http_build_query(parent::getConfig(),'',';');
+		$this->oPDO = new Pdo($sDns);
 	}
 	public static function getInstance(): DataBase {
 		if(self::$oInstance == null){
