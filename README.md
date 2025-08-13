@@ -30,5 +30,6 @@ Repositório com a configuração base para projetos PHP utilizando o padrão de
 
 <h2>Funcionamento</h2>
 
-![mvcImage](https://github.com/user-attachments/assets/29c025f4-6965-4bee-aaa2-8dea18cfbfb7)
+<img width="800" height="400" alt="image" src="https://github.com/user-attachments/assets/73c100eb-10cd-44fb-8126-128f812e7e65" />
+
 
