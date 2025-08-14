@@ -10,6 +10,7 @@ class DataBase extends BaseDatabase
 		$sDns = 'mysql:'. http_build_query(parent::getConfig(),'',';');
 		$this->oPDO = new Pdo($sDns);
 	}
+	
 	public static function getInstance(): DataBase {
 		if(self::$oInstance == null){
 			self::$oInstance = new DataBase();

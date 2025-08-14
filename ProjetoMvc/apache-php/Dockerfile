@@ -27,11 +27,6 @@ RUN apt-get update && apt-get install -y \
 # Copia configuração personalizada do php.ini
 COPY php.ini /usr/local/etc/php/conf.d/
 
-
-# Copia arquivos
-COPY php.ini /usr/local/etc/php/conf.d/
-
-
 #Habilita o mod_rewrite do apache-php, para url amigaveis
 RUN a2enmod rewrite
 
