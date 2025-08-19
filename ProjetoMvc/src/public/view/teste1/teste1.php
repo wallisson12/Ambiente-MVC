@@ -6,6 +6,6 @@
 	<h3>Teste 1</h3>
 </head>
 <body>
-<a href="/">Home</a>
+<a href="/home/index">Home</a>
 </body>
 </html>
