@@ -2,12 +2,10 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Home</title>
+	<title>Teste 2</title>
+	<h3>Teste 2</h3>
 </head>
-<h3>Home</h3>
 <body>
-
-<a href="/teste1">Teste1</a>
-<a href="/teste2">Teste2</a>
+<a href="/home/index">Home</a>
 </body>
 </html>

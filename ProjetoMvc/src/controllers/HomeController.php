@@ -1,8 +1,12 @@
 <?php
+namespace src\controllers;
 
 class HomeController
 {
-	public function index(){
-		require '../public/view/home.php';
+	/**
+	 * Metodo responsavel por carregar a pagina home
+	 */
+	public function index($aDados = []){
+		include __DIR__.'../../public/view/home/home.php';
 	}
 }
