@@ -2,6 +2,7 @@
 namespace src\config;
 
 use PDO;
+use PDOException;
 
 require_once 'src/config/BaseDataBase.php';
 
@@ -14,6 +15,9 @@ class DataBase extends BaseDatabase
 		parent::__construct();
 		$sDns = 'mysql:'. http_build_query(parent::getConfig(),'',';');
 		$this->oPDO = new Pdo($sDns);
+
+		//Configurando o pdo para exibir os errors
+		$this->oPDO->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 	}
 
 	/**
@@ -28,14 +32,19 @@ class DataBase extends BaseDatabase
 	}
 
 	/**
-	 * Metodo responsavel por executar a query no banco
+	 * Metodo responsavel por executar a query para salvar um usuario
 	 * 
 	 * @param string $sSql
 	 */
-	public function query(string $sSql) : array {
-		$oStatement = $this->oPDO->prepare($sSql);
-		$oStatement->execute();
-		return $oStatement->fetchAll(PDO::FETCH_ASSOC);
+	public function salvaUsuario(string $sNome,int $iTipoUsuario): void {
+		try{
+			$sSql = "INSERT INTO users (username,admin) VALUES ('{$sNome}',{$iTipoUsuario})";
+			$oStatement = $this->oPDO->prepare($sSql);
+			$oStatement->execute();
+		}catch(PDOException $e){		
+			echo $e->getMessage();
+			die();
+		}
 	}
 
 }

@@ -2,13 +2,13 @@
 
 namespace src\config;
 
+//Uma forma de nao precisar passar o caminho
 use src\controllers\HomeController;
-use src\controllers\Teste2Controller;
-use src\controllers\Teste1Controller;
+use src\controllers\UsuariosController;
 
+//Inclui o arquivo
 require_once 'src/controllers/HomeController.php';
-require_once 'src/controllers/Teste1Controller.php';
-require_once 'src/controllers/Teste2Controller.php';
+require_once 'src/controllers/UsuariosController.php';
 
 $aDados = array_merge($_POST,$_GET);
 routeToController($aDados);
@@ -32,6 +32,7 @@ function routeToController(array $aDados){
 
 	//Separa em Controller e Metodo	
 	$sController = "src\\controllers\\" . ucfirst($aUrl[0]) . "Controller";
+
 	$sMetodo = $aUrl[1];
 
 	carregaControllerMetodo($sController,$sMetodo,$aDados);

@@ -6,7 +6,9 @@
 </head>
 <h3>Home</h3>
 <body>
-	<a href="/teste1/index">Teste1</a>
-	<a href="/teste2/index">Teste2</a>
+	<ul>
+		<li><a href="/usuarios/indexCadastrar">Cadastro Usuario</a></li>
+		<li><a href="/usuarios/indexListar">Lista Usuarios</a></li>
+	</ul>
 </body>
 </html>
