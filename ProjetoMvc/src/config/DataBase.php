@@ -25,10 +25,40 @@ class DataBase extends BaseDatabase
 	 * 
 	 */
 	public static function getInstance(): DataBase {
-		if(self::$oInstance == null){
+		if(empty(self::$oInstance)){
 			self::$oInstance = new DataBase();
 		}
 		return self::$oInstance;
+	}
+
+
+	/**
+	 * Responsavel por inserir e atualizar
+	 * No array passar os valores dos paramentos da query que esta sendo realizada
+	 * Percorrer o arry e colocar em cada '?' no sql o valor que esta no array
+	 * Na parte de +1 esse mais 1, eh so para o bindvalue, mas o valor do array ja esta sendo passado na posicao certa
+	 *
+	 * @param string $sSql query sql
+	 * @param array $aParams array onde pode ou nao ter parametros do sql
+	 * @return void
+	 * @author Wallisson De Jesus wallissondejesus@moobi.com.br
+	 *
+	 */
+	public function execute(string $sSql, array $aParams = []): void {
+		try {
+			$PDOStatement = $this->oPDO->prepare($sSql);
+
+			if (!empty($aParams)) {
+				foreach ($aParams as $sKey => $sValue) {
+					$PDOStatement->bindValue($sKey + 1, $sValue);
+				}
+			}
+
+			$PDOStatement->execute();
+
+		} catch (PDOException $e) {
+			echo $e->getMessage();
+		}
 	}
 
 	/**

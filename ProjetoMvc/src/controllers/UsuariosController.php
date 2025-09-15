@@ -2,10 +2,13 @@
 
 namespace src\controllers;
 
-use src\config\DataBase;
 use Exception;
+use InvalidArgumentException;
+use Model\Usuario\Usuario;
+use DAOFactory;
 
 require_once 'src/config/DataBase.php';
+require_once 'src/Model/Usuario/Usuario.php';
 
 /**
  * Classe UsuariosController
@@ -17,7 +20,7 @@ class UsuariosController {
      * 
      * @param array $aDados
      */
-    public function indexCadastrar(array $aDados = []) : void{
+    public function indexCadastrar(array $aDados = []) : void {
         include_once __DIR__ . '/../public/view/usuarios/CadastroUsuarios.php';
     }
 
@@ -26,7 +29,7 @@ class UsuariosController {
      * 
      * @param array $aDados
      */
-    public function indexListar(array $aDados = []) : void{
+    public function indexListar(array $aDados = []) : void {
         include_once __DIR__ . '/../public/view/usuarios/ListaUsuarios.php';
     }
 
@@ -35,20 +38,17 @@ class UsuariosController {
      * 
      * @param array $aDados
      */
-    public function cadastar(array $aDados = []){
+    public function cadastar(array $aDados = []): void {
         try{
             if(isset($aDados['cadastrarUsuario'])){
-                $sNome = $aDados['nome'];
-                $iTipoUsuario = (int)$aDados['tipoUsuario'];
-                if(!empty($sNome) || !empty($iTipoUsuario)){
-                    DataBase::getInstance()->salvaUsuario($sNome,$iTipoUsuario);
-                    header('Location: /usuarios/indexCadastrar');
-                    exit();
-                }
+                $this->validarCadastro($aDados);
+                $oUsuario = Usuario::createFromArray($aDados);
+                $oUsuario->cadastrar();
+                header('Location: /usuarios/indexCadastrar');
+            }else{
+                header('Location: /home/index');
+                exit();
             }
-
-            header('Location: /home/index');
-
         }catch(Exception $e){
             $e->getMessage();
             header('Location: /home/index');
@@ -59,7 +59,53 @@ class UsuariosController {
 
     }
 
-    public function deletar() : void{
+    /**
+     * Responsavel por atualizar um cadastro
+     */
+    public function atualizar(): void {
 
+    }
+
+    /**
+     * Responsavel por apagar um usuario
+     * 
+     * @param array $aDados
+     * @return void
+     */
+    public function deletar(array $aDados) : void{
+        try{
+            $this->validarDeletar($aDados);
+            DAOFactory::getDAOFactory()->getUsuarioDAO()->deletar($aDados['id']);
+            header('Location: /home/indexListar');
+        }catch(Exception $e){
+            $e->getMessage();
+            header('Location: /home/indexListar');
+            exit();
+        }
+
+    }
+
+
+//////////////Depois criar um service para encapsular a responsabilidade///////////////
+
+    /**
+     * Responsavel por realizar a validacao dos campos de cadastro
+     * 
+     * @param array $aDados
+     * @return void
+     */
+    private function validarCadastro(array $aDados): void {
+        if(empty($aDados['nome'])){
+            throw new InvalidArgumentException("O nome é obrigatorio");
+        }
+        if(empty($aDados['tipoUsuario'])){
+            throw new InvalidArgumentException("O tipo de usuario é obrigatorio");
+        }
+    }
+
+    private function validarDeletar(array $aDados){
+        if(empty($aDados['id'])){
+            throw new InvalidArgumentException("O identificador não encontrado");
+        }
     }
 }
