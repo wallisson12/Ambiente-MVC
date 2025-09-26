@@ -6,9 +6,11 @@ use Exception;
 use InvalidArgumentException;
 use Model\Usuario\Usuario;
 use DAOFactory;
+use UsuarioFilters;
 
 require_once 'src/config/DataBase.php';
 require_once 'src/Model/Usuario/Usuario.php';
+require_once 'src/Model/Usuario/UsuarioFilters.php';
 
 /**
  * Classe UsuariosController
@@ -16,7 +18,7 @@ require_once 'src/Model/Usuario/Usuario.php';
 class UsuariosController {
 
     /**
-     * Metodo responsavel por retornar a view de cadastro usuario
+     * Carrega a view de cadastro usuario
      * 
      * @param array $aDados
      */
@@ -25,12 +27,19 @@ class UsuariosController {
     }
 
     /**
-     * Metodo responsavel por retornar a view de lsitagem usuarios
+     * Carrega a view de listagem usuarios
      * 
      * @param array $aDados
      */
     public function indexListar(array $aDados = []) : void {
         include_once __DIR__ . '/../public/view/usuarios/ListaUsuarios.php';
+    }
+
+    /**
+     * Carrega a view de editar usuario
+     */
+    public function indexAtualizar(array $aDados = []){
+        include_once __DIR__ . '/../public/view/usuarios/EditarUsuarios.php';
     }
 
     /**
@@ -55,15 +64,37 @@ class UsuariosController {
         }
     }
 
-    public function listar(array $aDados = []){
-
+    /**
+     * Responsavel por listar os usuarios por requisicao ajax
+     * 
+     * @param array $aDados
+     */
+    public function listarAjax(array $aDados = []){
+        try {
+            $oUsuarioFilters = UsuarioFilters::creatFromArray($aDados);
+            $aUsuarios = DAOFactory::getDAOFactory()->getUsuarioDAO()->findByFilters($oUsuarioFilters);
+            echo json_encode($aUsuarios);
+         } catch (Exception $oException) {
+            echo json_encode([
+                "error" => true,
+                "message" => $oException->getMessage()
+            ]);
+            header('Location: /home/indexListar');
+            exit;
+        }
     }
 
     /**
      * Responsavel por atualizar um cadastro
      */
     public function atualizar(): void {
+        try{
 
+        }catch(Exception $oException){
+            $oException->getMessage();
+            header('Location: /home/indexListar');
+            exit();
+        }
     }
 
     /**
@@ -72,13 +103,14 @@ class UsuariosController {
      * @param array $aDados
      * @return void
      */
-    public function deletar(array $aDados) : void{
+    public function deletar(array $aDados = []) : void{
         try{
             $this->validarDeletar($aDados);
-            DAOFactory::getDAOFactory()->getUsuarioDAO()->deletar($aDados['id']);
+            $oUsuario = Usuario::createFromArray($aDados);
+            $oUsuario->deletar();
             header('Location: /home/indexListar');
-        }catch(Exception $e){
-            $e->getMessage();
+        }catch(Exception $oException){
+            $oException->getMessage();
             header('Location: /home/indexListar');
             exit();
         }

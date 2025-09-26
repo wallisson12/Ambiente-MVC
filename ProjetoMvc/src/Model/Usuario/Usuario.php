@@ -1,6 +1,7 @@
 <?php
 namespace Model\Usuario;
 
+use BooleanEnum;
 use DAOFactory;
 use Model\Usuario\UsuarioDAO;
 
@@ -21,7 +22,7 @@ class Usuario{
     {
         $this->sUserName = $sUserName;
         $this->iTipoUsuario = $iTipoUsuario;
-        $this->iStatus = 1;
+        $this->iStatus = BooleanEnum::SIM;
     }
   
     /**
@@ -29,7 +30,7 @@ class Usuario{
      * 
      * @return int
      */
-    public function getId(): int {
+    public function getId(): ?int {
         return $this->iIdUsuario;
     }
     
@@ -52,6 +53,24 @@ class Usuario{
     }
 
     /**
+     * Retorna o status do usuario
+     * 
+     * @return int
+     */
+    public function getStatusUsuario(): int{
+        return $this->iStatus;
+    }
+
+    /**
+     * Define o id do usuario
+     * 
+     * @param int null $iId
+     */
+    public function setId(?int $iId): void{
+        $this->iIdUsuario = $iId;
+    }
+
+    /**
      * Responsavel por cadastrar um usuario
      * 
      * @return void
@@ -61,13 +80,32 @@ class Usuario{
     }
 
     /**
+     * Responsavel por atualizar um usuario
+     * 
+     * @return void
+     */
+    public function atualizar() : void {
+        DAOFactory::getDAOFactory()->getUsuarioDAO()->atualizar($this);
+    }
+
+    /**
+     * Responsavel por deletar logicamente um usuario
+     * 
+     * @return void
+     */
+    public function deletar(): void {
+        DAOFactory::getDAOFactory()->getUsuarioDAO()->deletar($this->getId());
+    }
+
+    /**
      * Responsavel por criar um objeto usuario dado um array
      * 
      * @param array $aDados
      * @return Usuario
      */
     public static function createFromArray(array $aDados): Usuario{
-        $oUsuario = new Usuario($aDados['nome'],(int)$aDados['tipoUsuario']);
+        $oUsuario = new Usuario($aDados['username'],(int)$aDados['admin']);
+        $oUsuario->setId($aDados['id']);
         return $oUsuario;
     }
 }

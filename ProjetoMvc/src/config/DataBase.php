@@ -34,14 +34,10 @@ class DataBase extends BaseDatabase
 
 	/**
 	 * Responsavel por inserir e atualizar
-	 * No array passar os valores dos paramentos da query que esta sendo realizada
-	 * Percorrer o arry e colocar em cada '?' no sql o valor que esta no array
-	 * Na parte de +1 esse mais 1, eh so para o bindvalue, mas o valor do array ja esta sendo passado na posicao certa
 	 *
 	 * @param string $sSql query sql
 	 * @param array $aParams array onde pode ou nao ter parametros do sql
 	 * @return void
-	 * @author Wallisson De Jesus wallissondejesus@moobi.com.br
 	 *
 	 */
 	public function execute(string $sSql, array $aParams = []): void {
@@ -61,20 +57,33 @@ class DataBase extends BaseDatabase
 		}
 	}
 
+
 	/**
-	 * Metodo responsavel por executar a query para salvar um usuario
-	 * 
-	 * @param string $sSql
+	 * Responsavel por realizar consultas no banco de dados
+	 *
+	 * @param string $sSql query sql
+	 * @param array $aParams array onde pode ou nao ter parametros do sql
+	 * @return array
+	 *
 	 */
-	public function salvaUsuario(string $sNome,int $iTipoUsuario): void {
-		try{
-			$sSql = "INSERT INTO users (username,admin) VALUES ('{$sNome}',{$iTipoUsuario})";
-			$oStatement = $this->oPDO->prepare($sSql);
-			$oStatement->execute();
-		}catch(PDOException $e){		
-			echo $e->getMessage();
-			die();
+	public function query(string $sSql, array $aParams = []): array {
+		try {
+			$PDOStatement = $this->oPDO->prepare($sSql);
+
+			if (!empty($aParams)) {
+				foreach ($aParams as $sKey => $sValue) {
+					$PDOStatement->bindValue($sKey + 1, $sValue, is_int($sValue) ? PDO::PARAM_INT : PDO::PARAM_STR);
+				}
+			}
+
+			$PDOStatement->execute();
+			return $PDOStatement->fetchAll(PDO::FETCH_ASSOC);
+
+		} catch (PDOException $oException) {
+			echo $oException->getMessage();
+			return [];
 		}
+
 	}
 
 }

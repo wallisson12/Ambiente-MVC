@@ -9,11 +9,11 @@
     <form id="formularioCadastroUsuario" action="/usuarios/cadastar" method="post">
         <div class="form-group">
             <label>Nome</label>
-            <input type="text" name="nome" require>
+            <input type="text" name="username" require>
         </div>
         <div class="form-group">
             <label>Tipo Usuario</label>
-            <select name="tipoUsuario">
+            <select name="admin">
                 <option value="1">Comun</option>
                 <option value="2">Admin</option>
             </select>
