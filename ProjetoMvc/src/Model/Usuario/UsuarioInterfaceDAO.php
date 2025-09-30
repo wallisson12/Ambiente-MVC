@@ -45,5 +45,5 @@ interface UsuarioInterfaceDAO{
      * 
      * @param int $iId
      */
-    public function deletar(int $iId): void;
+    public function deletar(Usuario $oUsuario): void;
 }

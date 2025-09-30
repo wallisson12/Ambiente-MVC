@@ -3,6 +3,7 @@ namespace Model\Usuario;
 
 use BooleanEnum;
 use DAOFactory;
+use Exception;
 use Model\Usuario\Usuario;
 use PDOException;
 use src\config\DataBase;
@@ -14,8 +15,26 @@ require_once 'src/Utils/Enums/BooleanEnum.php';
 
 class UsuarioDAO implements UsuarioInterfaceDAO{
     
+    /**
+     * Busca um usuario por seu id
+     * 
+     * @param int $iId
+     */
     public function findById(int $iId): Usuario {
-        return new Usuario('mock','mock');
+        $sSql = "SELECT * FROM users usr WHERE usr.id = ?";
+        $aParam = [$iId];
+
+        try{
+            $aaUsuario = DataBase::getInstance()->query($sSql,$aParam);
+        }catch(PDOException $oException){
+            throw new PDOException("Ocorreu um erro ao buscar um usuario com id: {$iId}");
+        }
+
+        if(empty($aaUsuario)){
+            throw new Exception("Não existe nemhum usuario com esse id : {$iId}");
+        }
+
+        return Usuario::createFromArray($aaUsuario[0]);;
     }
 
     /**
@@ -39,8 +58,10 @@ class UsuarioDAO implements UsuarioInterfaceDAO{
         foreach($aaUsuarios as $aUsuario){
             $oUsuario = Usuario::createFromArray($aUsuario);
             $aUsuariosObj[] = [
+                    'id' => $oUsuario->getId(),
                     'nome' => $oUsuario->getNomeUsuario(), 
-                    'tipo' => $oUsuario->getTipoUsuario()
+                    'tipo' => $oUsuario->getTipoUsuario(),
+                    'status' => $oUsuario->getStatusUsuario()
             ];
         }
 
@@ -54,7 +75,7 @@ class UsuarioDAO implements UsuarioInterfaceDAO{
      * @return void
      */
     public function cadastrar(Usuario $oUsuario): void {
-        $sSql = "INSERT INTO users (usrusername,admin,status) VALUES (?,?,?)";
+        $sSql = "INSERT INTO users (username,admin,status) VALUES (?,?,?)";
         $aParam = [$oUsuario->getNomeUsuario(),$oUsuario->getTipoUsuario(),$oUsuario->getStatusUsuario()];
 
         try{
@@ -89,9 +110,9 @@ class UsuarioDAO implements UsuarioInterfaceDAO{
      * @param int $iId
      * @return void 
      */
-    public function deletar(int $iId): void {
+    public function deletar(Usuario $oUsuario): void {
         $sSql = "UPDATE users usr SET usr.status = ? WHERE usr.id = ?";
-        $aParam = [BooleanEnum::NAO,$iId];
+        $aParam = [BooleanEnum::NAO,$oUsuario->getId()];
         
         try{
             DataBase::getInstance()->execute($sSql,$aParam);

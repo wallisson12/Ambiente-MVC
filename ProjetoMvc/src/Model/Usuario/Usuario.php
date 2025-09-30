@@ -57,17 +57,45 @@ class Usuario{
      * 
      * @return int
      */
-    public function getStatusUsuario(): int{
+    public function getStatusUsuario(): int {
         return $this->iStatus;
     }
 
     /**
      * Define o id do usuario
      * 
-     * @param int null $iId
+     * @param int|null $iId
      */
-    public function setId(?int $iId): void{
+    public function setId(?int $iId): void {
         $this->iIdUsuario = $iId;
+    }
+
+    /**
+     * Define o nome do usuario
+     * 
+     * @param string $sNome
+     */
+    public function setNomeUsuario(string $sNome) : void {
+        $this->sUserName = $sNome;
+    }
+
+    /**
+     * Define o tipo de usuario
+     * 
+     * @param int $iTipoUsuario
+     */
+    public function setTipoUsuario(int $iTipoUsuario) : void {
+        $this->iTipoUsuario = $iTipoUsuario;
+    }
+
+
+    /**
+     * Define o status do usuario, (deletado ou nao)
+     * 
+     * @param int $iStatus
+     */
+    public function setStatusUsuario(int $iStatus) : void {
+        $this->iStatus = $iStatus;
     }
 
     /**
@@ -94,8 +122,9 @@ class Usuario{
      * @return void
      */
     public function deletar(): void {
-        DAOFactory::getDAOFactory()->getUsuarioDAO()->deletar($this->getId());
+        DAOFactory::getDAOFactory()->getUsuarioDAO()->deletar($this);
     }
+
 
     /**
      * Responsavel por criar um objeto usuario dado um array
@@ -103,8 +132,8 @@ class Usuario{
      * @param array $aDados
      * @return Usuario
      */
-    public static function createFromArray(array $aDados): Usuario{
-        $oUsuario = new Usuario($aDados['username'],(int)$aDados['admin']);
+    public static function createFromArray(array $aDados): Usuario {
+        $oUsuario = new Usuario($aDados['username'],intval($aDados['admin']));
         $oUsuario->setId($aDados['id']);
         return $oUsuario;
     }

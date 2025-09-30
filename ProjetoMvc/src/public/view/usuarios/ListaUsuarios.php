@@ -13,6 +13,7 @@
         <thead>
             <th>Nome</th>
             <th>Tipo de usuario</th>
+            <th>Acoes</th>
         </thead>
         <tbody>
         </tbody>

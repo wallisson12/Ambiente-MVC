@@ -6,6 +6,7 @@ use Exception;
 use InvalidArgumentException;
 use Model\Usuario\Usuario;
 use DAOFactory;
+use src\config\DataBase;
 use UsuarioFilters;
 
 require_once 'src/config/DataBase.php';
@@ -36,10 +37,18 @@ class UsuariosController {
     }
 
     /**
-     * Carrega a view de editar usuario
+     * Carrega a view de editar usuario ja com os dados do usuario
      */
-    public function indexAtualizar(array $aDados = []){
-        include_once __DIR__ . '/../public/view/usuarios/EditarUsuarios.php';
+    public function editar(array $aDados = []){
+        try{
+            $this->validarEditarDeletar($aDados);
+            $oUsuario = DAOFactory::getDAOFactory()->getUsuarioDAO()->findById($aDados['id']);
+            include_once __DIR__ . '/../public/view/usuarios/EditarUsuario.php';
+        }catch(Exception $oException){
+            $oException->getMessage();
+            header('Location: /home/indexListar');
+            exit();
+        }
     }
 
     /**
@@ -86,10 +95,22 @@ class UsuariosController {
 
     /**
      * Responsavel por atualizar um cadastro
+     * 
+     * @param array $aDados
      */
-    public function atualizar(): void {
+    public function atualizar(array $aDados = []): void {
         try{
+            $this->validarEditarDeletar($aDados);
+            $oUsuario = DAOFactory::getDAOFactory()->getUsuarioDAO()->findById($aDados['id']);
+            if($aDados['username']){
+                $oUsuario->setNomeUsuario($aDados['username']);
+            }
 
+            if($aDados['admin']){
+                $oUsuario->setTipoUsuario(intval($aDados['admin']));
+            }
+
+            $oUsuario->atualizar();
         }catch(Exception $oException){
             $oException->getMessage();
             header('Location: /home/indexListar');
@@ -105,7 +126,7 @@ class UsuariosController {
      */
     public function deletar(array $aDados = []) : void{
         try{
-            $this->validarDeletar($aDados);
+            $this->validarEditarDeletar($aDados);
             $oUsuario = Usuario::createFromArray($aDados);
             $oUsuario->deletar();
             header('Location: /home/indexListar');
@@ -127,17 +148,23 @@ class UsuariosController {
      * @return void
      */
     private function validarCadastro(array $aDados): void {
-        if(empty($aDados['nome'])){
+        if(empty($aDados['username'])){
             throw new InvalidArgumentException("O nome é obrigatorio");
         }
-        if(empty($aDados['tipoUsuario'])){
+        if(empty($aDados['admin'])){
             throw new InvalidArgumentException("O tipo de usuario é obrigatorio");
         }
     }
 
-    private function validarDeletar(array $aDados){
+    /**
+     * Responsavel por realizar validacao da edicao/delecao de um usuario
+     * 
+     * @param array $aDados
+     * @return void
+     */
+    private function validarEditarDeletar(array $aDados): void {
         if(empty($aDados['id'])){
-            throw new InvalidArgumentException("O identificador não encontrado");
+            throw new InvalidArgumentException("O identificador do usuario não foi encontrado");
         }
     }
 }
