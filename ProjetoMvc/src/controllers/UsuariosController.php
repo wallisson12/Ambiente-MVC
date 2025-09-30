@@ -101,15 +101,10 @@ class UsuariosController {
     public function atualizar(array $aDados = []): void {
         try{
             $this->validarEditarDeletar($aDados);
-            $oUsuario = DAOFactory::getDAOFactory()->getUsuarioDAO()->findById($aDados['id']);
-            if($aDados['username']){
-                $oUsuario->setNomeUsuario($aDados['username']);
+            if(empty($aDados['username'])){
+                throw new InvalidArgumentException("O nome do usuario é obrigatorio");
             }
-
-            if($aDados['admin']){
-                $oUsuario->setTipoUsuario(intval($aDados['admin']));
-            }
-
+            $oUsuario = Usuario::createFromArray($aDados);
             $oUsuario->atualizar();
         }catch(Exception $oException){
             $oException->getMessage();
