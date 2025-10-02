@@ -5,6 +5,8 @@ require_once "src/Model/Usuario/TipoUsuarioEnum.php"
  * @var Usuario $oUsuario
 */
 
+
+
 ?>
 <html lang="en">
 <head>
@@ -13,7 +15,9 @@ require_once "src/Model/Usuario/TipoUsuarioEnum.php"
     <title>Editar Usuario</title>
 </head>
 <body>
-    <form id="formularioEditarUsuario" action="/usuarios/atualizar" method="post">
+    <form id="formularioEditarUsuario" action="/usuario/atualizar" method="post">
+        
+        <input type="hidden" name="id" value="<?php echo $oUsuario->getId();?>">
         <div class="form-group">
             <label>Nome</label>
             <input type="text" name="username" value="<?php echo $oUsuario->getNomeUsuario()?>" required>

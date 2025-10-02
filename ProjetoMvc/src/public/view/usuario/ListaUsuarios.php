@@ -19,7 +19,7 @@
         </tbody>
     </table>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="/src/public/view/usuarios/js/Usuario.js"></script>
+    <script src="/src/public/view/usuario/js/Usuario.js"></script>
 </body>
 
 </html>

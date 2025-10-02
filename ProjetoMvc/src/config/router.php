@@ -4,11 +4,11 @@ namespace src\config;
 
 //Uma forma de nao precisar passar o caminho
 use src\controllers\HomeController;
-use src\controllers\UsuariosController;
+use src\controllers\UsuarioController;
 
 //Inclui o arquivo
 require_once 'src/controllers/HomeController.php';
-require_once 'src/controllers/UsuariosController.php';
+require_once 'src/controllers/UsuarioController.php';
 
 $aDados = array_merge($_POST,$_GET);
 routeToController($aDados);

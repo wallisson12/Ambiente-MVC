@@ -6,6 +6,7 @@ use Exception;
 use InvalidArgumentException;
 use Model\Usuario\Usuario;
 use DAOFactory;
+use Model\Usuario\UsuarioDAO;
 use src\config\DataBase;
 use UsuarioFilters;
 
@@ -16,7 +17,7 @@ require_once 'src/Model/Usuario/UsuarioFilters.php';
 /**
  * Classe UsuariosController
  */
-class UsuariosController {
+class UsuarioController {
 
     /**
      * Carrega a view de cadastro usuario
@@ -24,7 +25,7 @@ class UsuariosController {
      * @param array $aDados
      */
     public function indexCadastrar(array $aDados = []) : void {
-        include_once __DIR__ . '/../public/view/usuarios/CadastroUsuarios.php';
+        include_once __DIR__ . '/../public/view/usuario/CadastroUsuarios.php';
     }
 
     /**
@@ -33,7 +34,7 @@ class UsuariosController {
      * @param array $aDados
      */
     public function indexListar(array $aDados = []) : void {
-        include_once __DIR__ . '/../public/view/usuarios/ListaUsuarios.php';
+        include_once __DIR__ . '/../public/view/usuario/ListaUsuarios.php';
     }
 
     /**
@@ -43,7 +44,7 @@ class UsuariosController {
         try{
             $this->validarEditarDeletar($aDados);
             $oUsuario = DAOFactory::getDAOFactory()->getUsuarioDAO()->findById($aDados['id']);
-            include_once __DIR__ . '/../public/view/usuarios/EditarUsuario.php';
+            include_once __DIR__ . '/../public/view/usuario/EditarUsuario.php';
         }catch(Exception $oException){
             $oException->getMessage();
             header('Location: /home/indexListar');
@@ -62,7 +63,7 @@ class UsuariosController {
                 $this->validarCadastro($aDados);
                 $oUsuario = Usuario::createFromArray($aDados);
                 $oUsuario->cadastrar();
-                header('Location: /usuarios/indexCadastrar');
+                header('Location: /usuario/indexCadastrar');
             }else{
                 header('Location: /home/index');
                 exit();
@@ -106,6 +107,7 @@ class UsuariosController {
             }
             $oUsuario = Usuario::createFromArray($aDados);
             $oUsuario->atualizar();
+            header('Location: /usuario/indexListar');
         }catch(Exception $oException){
             $oException->getMessage();
             header('Location: /home/indexListar');
@@ -122,9 +124,9 @@ class UsuariosController {
     public function deletar(array $aDados = []) : void{
         try{
             $this->validarEditarDeletar($aDados);
-            $oUsuario = Usuario::createFromArray($aDados);
+            $oUsuario = DAOFactory::getDAOFactory()->getUsuarioDAO()->findById($aDados['id']);
             $oUsuario->deletar();
-            header('Location: /home/indexListar');
+            header('Location: /usuario/indexListar');
         }catch(Exception $oException){
             $oException->getMessage();
             header('Location: /home/indexListar');

@@ -6,7 +6,7 @@
 </head>
 <body>
     <h3>Cadastro Usuario</h3>
-    <form id="formularioCadastroUsuario" action="/usuarios/cadastar" method="post">
+    <form id="formularioCadastroUsuario" action="/usuario/cadastar" method="post">
         <div class="form-group">
             <label>Nome</label>
             <input type="text" name="username" require>

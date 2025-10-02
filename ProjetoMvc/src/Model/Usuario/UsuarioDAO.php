@@ -44,7 +44,7 @@ class UsuarioDAO implements UsuarioInterfaceDAO{
      */
     public function findByFilters(UsuarioFilters $oUsuarioFilters): array {
         $sSql = "SELECT * FROM users usr 
-                 Where usr.username IS NOT NULL AND usr.status = ?";
+                 Where usr.username IS NOT NULL AND usr.status = ? ORDER BY usr.username";
 
         $aParam = [BooleanEnum::SIM];
 

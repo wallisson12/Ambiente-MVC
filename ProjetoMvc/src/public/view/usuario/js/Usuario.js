@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 function realizarRequisicaoAjaxListarUsuarios(){
     $.ajax({
-        url: "/usuarios/listarAjax",
+        url: "/usuario/listarAjax",
         type: "GET",
         dataType: "json",
         success: (usuarios) => {
@@ -46,7 +46,7 @@ function anexarEventosAcoesBotoes() {
 function adicionarEventoEditar(){
     $("#tabela_usuarios").on("click",".btn-editar",function(){
         let iIdUsuario = $(this).data('id');
-        window.location.href = `/usuarios/editar?id=${iIdUsuario}`;
+        window.location.href = `/usuario/editar?id=${iIdUsuario}`;
     });
 }
 
@@ -56,13 +56,6 @@ function adicionarEventoEditar(){
 function adicionarEventoApagar() {
     $("#tabela_usuarios").on("click", ".btn-deletar", function(){
         let iIdUsuario = $(this).data('id');
-        realizarRequisicaoAjaxDeletarUsuario(iIdUsuario);
+        window.location.href = `/usuario/deletar?id=${iIdUsuario}`;
     });
-}
-
-/**
- * Realiza a requisicao para o endpoint deletar um usuario
- */
-function realizarRequisicaoAjaxDeletarUsuario(iIdUsuario){
-    
 }
