@@ -9,15 +9,29 @@ use DAOFactory;
 use Model\Usuario\UsuarioDAO;
 use src\config\DataBase;
 use UsuarioFilters;
+use UsuarioService;
 
 require_once 'src/config/DataBase.php';
 require_once 'src/Model/Usuario/Usuario.php';
 require_once 'src/Model/Usuario/UsuarioFilters.php';
+require_once 'src/Services/UsuarioService.php';
 
 /**
  * Classe UsuariosController
  */
 class UsuarioController {
+
+    private $oUsuarioService;
+
+    /**
+     * Construtor
+     */
+    public function __construct()
+    {
+        $this->oUsuarioService = new UsuarioService(
+            DAOFactory::getDAOFactory()->getUsuarioDAO()
+        );
+    }
 
     /**
      * Carrega a view de cadastro usuario
@@ -42,8 +56,7 @@ class UsuarioController {
      */
     public function editar(array $aDados = []){
         try{
-            $this->validarEditarDeletar($aDados);
-            $oUsuario = DAOFactory::getDAOFactory()->getUsuarioDAO()->findById($aDados['id']);
+            $oUsuario = $this->oUsuarioService->editarUsuario($aDados);
             include_once __DIR__ . '/../public/view/usuario/EditarUsuario.php';
         }catch(Exception $oException){
             $oException->getMessage();
@@ -60,9 +73,7 @@ class UsuarioController {
     public function cadastar(array $aDados = []): void {
         try{
             if(isset($aDados['cadastrarUsuario'])){
-                $this->validarCadastro($aDados);
-                $oUsuario = Usuario::createFromArray($aDados);
-                $oUsuario->cadastrar();
+                $this->oUsuarioService->cadastrarNovoUsuario($aDados);
                 header('Location: /usuario/indexCadastrar');
             }else{
                 header('Location: /home/index');
@@ -101,12 +112,7 @@ class UsuarioController {
      */
     public function atualizar(array $aDados = []): void {
         try{
-            $this->validarEditarDeletar($aDados);
-            if(empty($aDados['username'])){
-                throw new InvalidArgumentException("O nome do usuario é obrigatorio");
-            }
-            $oUsuario = Usuario::createFromArray($aDados);
-            $oUsuario->atualizar();
+            $this->oUsuarioService->atualizarCadastroUsuario($aDados);    
             header('Location: /usuario/indexListar');
         }catch(Exception $oException){
             $oException->getMessage();
@@ -121,11 +127,9 @@ class UsuarioController {
      * @param array $aDados
      * @return void
      */
-    public function deletar(array $aDados = []) : void{
+    public function deletar(array $aDados = []) : void {
         try{
-            $this->validarEditarDeletar($aDados);
-            $oUsuario = DAOFactory::getDAOFactory()->getUsuarioDAO()->findById($aDados['id']);
-            $oUsuario->deletar();
+            $this->oUsuarioService->deletarCadastroUsuario($aDados);
             header('Location: /usuario/indexListar');
         }catch(Exception $oException){
             $oException->getMessage();
@@ -133,35 +137,5 @@ class UsuarioController {
             exit();
         }
 
-    }
-
-
-//////////////Depois criar um service para encapsular a responsabilidade///////////////
-
-    /**
-     * Responsavel por realizar a validacao dos campos de cadastro
-     * 
-     * @param array $aDados
-     * @return void
-     */
-    private function validarCadastro(array $aDados): void {
-        if(empty($aDados['username'])){
-            throw new InvalidArgumentException("O nome é obrigatorio");
-        }
-        if(empty($aDados['admin'])){
-            throw new InvalidArgumentException("O tipo de usuario é obrigatorio");
-        }
-    }
-
-    /**
-     * Responsavel por realizar validacao da edicao/delecao de um usuario
-     * 
-     * @param array $aDados
-     * @return void
-     */
-    private function validarEditarDeletar(array $aDados): void {
-        if(empty($aDados['id'])){
-            throw new InvalidArgumentException("O identificador do usuario não foi encontrado");
-        }
     }
 }
