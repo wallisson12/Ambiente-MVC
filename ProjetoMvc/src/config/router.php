@@ -51,7 +51,6 @@ function carregaControllerMetodo(?string $sController, ?string $sMetodo,$aDados)
 		$oController->$sMetodo($aDados);
 		return;
 	}
-	
 	$oController = new HomeController();
 	$oController->index($aDados);
 }

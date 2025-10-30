@@ -10,11 +10,13 @@ use Model\Usuario\UsuarioDAO;
 use src\config\DataBase;
 use UsuarioFilters;
 use UsuarioService;
+use View;
 
 require_once 'src/config/DataBase.php';
 require_once 'src/Model/Usuario/Usuario.php';
 require_once 'src/Model/Usuario/UsuarioFilters.php';
 require_once 'src/Services/UsuarioService.php';
+require_once 'src/Utils/CarregarViews/View.php';
 
 /**
  * Classe UsuariosController
@@ -39,7 +41,8 @@ class UsuarioController {
      * @param array $aDados
      */
     public function indexCadastrar(array $aDados = []) : void {
-        include_once __DIR__ . '/../public/view/usuario/CadastroUsuarios.php';
+        $oView = new View(__DIR__ .'/../public/view/usuario/CadastroUsuarios.php');
+        $oView->render();
     }
 
     /**
@@ -48,7 +51,8 @@ class UsuarioController {
      * @param array $aDados
      */
     public function indexListar(array $aDados = []) : void {
-        include_once __DIR__ . '/../public/view/usuario/ListaUsuarios.php';
+        $oView = new View(__DIR__ .'/../public/view/usuario/ListaUsuarios.php');
+        $oView->render();
     }
 
     /**
@@ -57,7 +61,9 @@ class UsuarioController {
     public function editar(array $aDados = []){
         try{
             $oUsuario = $this->oUsuarioService->editarUsuario($aDados);
-            include_once __DIR__ . '/../public/view/usuario/EditarUsuario.php';
+            $oView = new View("src/public/view/usuario/EditarUsuario.php");
+            $oView->adicionarDado("oUsuario",$oUsuario);
+            $oView->render();
         }catch(Exception $oException){
             $oException->getMessage();
             header('Location: /home/indexListar');
