@@ -1,3 +1,6 @@
+<?php 
+require_once "src/Model/Usuario/TipoUsuarioEnum.php";
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,10 +16,15 @@
         </div>
         <div class="form-group">
             <label>Tipo Usuario</label>
-            <select name="admin">
-                <option value="1">Comun</option>
-                <option value="2">Admin</option>
+            <select name="tipo_usuario" require>
+                <option value="<?php echo TipoUsuarioEnum::Comun; ?>">Comun</option>
+                <option value="<?php echo TipoUsuarioEnum::Administrador; ?>">Admin</option>
             </select>
+        </div>
+
+        <div class="form-group">
+            <label name="senha">Senha</label>
+            <input type="text" name="senha" require>
         </div>
         <button name="cadastrarUsuario">Cadastrar</button>
     </form>

@@ -1,6 +1,3 @@
-<?php
-	$_SESSION['name'] = "wallisson";
-?>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">

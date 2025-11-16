@@ -54,6 +54,9 @@ class UsuarioService{
         if(empty($aDados['username'])){
             throw new InvalidArgumentException("O nome do usuario é obrigatorio");
         }
+        if(empty($aDados['tipo_usuario'])){
+            throw new InvalidArgumentException("O tipo de usuario é obrigatorio");
+        }
         $oUsuario = Usuario::createFromArray($aDados);
         $oUsuario->atualizar();
     }
@@ -85,7 +88,7 @@ class UsuarioService{
                 throw new InvalidArgumentException("O nome é obrigatorio");  
             }
 
-            if(empty($aDados['admin'])){
+            if(empty($aDados['tipo_usuario'])){
                 throw new InvalidArgumentException("O tipo de usuario é obrigatorio");
             }
 

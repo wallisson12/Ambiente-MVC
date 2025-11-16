@@ -1,12 +1,6 @@
 <?php
 require_once "src/Model/Usuario/TipoUsuarioEnum.php"
-
-/**
- * @var Usuario $oUsuario
-*/
-
-
-
+/** @var Usuario $oUsuario*/
 ?>
 <html lang="en">
 <head>
@@ -20,13 +14,21 @@ require_once "src/Model/Usuario/TipoUsuarioEnum.php"
         <input type="hidden" name="id" value="<?php echo $oUsuario->getId();?>">
         <div class="form-group">
             <label>Nome</label>
-            <input type="text" name="username" value="<?php echo $oUsuario->getNomeUsuario()?>" required>
+            <input type="text" name="username" value="<?php echo $oUsuario->getNomeUsuario()?>" required >
         </div>
         <div class="form-group">
             <label>Tipo Usuario</label>
-            <select name="admin">
-                <option value="1" <?php echo $oUsuario->getTipoUsuario() == TipoUsuarioEnum::Comun ? "selected" : "" ?>>Comun</option>
-                <option value="2" <?php echo $oUsuario->getTipoUsuario() == TipoUsuarioEnum::Administrador ? "selected" : "" ?>>Admin</option>
+            <select name="tipo_usuario" require>
+
+                <option value="<?php echo TipoUsuarioEnum::Comun ?>" 
+                    <?php echo $oUsuario->getTipoUsuario() == TipoUsuarioEnum::Comun 
+                                ? "selected" 
+                                : "" ?>>Comun</option>
+
+                <option value="<?php echo TipoUsuarioEnum::Administrador ?>" 
+                    <?php echo $oUsuario->getTipoUsuario() == TipoUsuarioEnum::Administrador 
+                                ? "selected" 
+                                : "" ?>>Admin</option>
             </select>
         </div>
         <button name="atualizarUsuario">Atualizar</button>

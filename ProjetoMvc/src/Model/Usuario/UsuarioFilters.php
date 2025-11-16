@@ -9,7 +9,7 @@ class UsuarioFilters{
     private $iIdUsuario;
 
     /** @var string sNomeUsuario */
-    private $sNomeUsuario;
+    private $sUserName;
 
     /** @var int iTipoUsuario */
     private $iTipoUsuario;
@@ -29,7 +29,7 @@ class UsuarioFilters{
      * Retorna o Nome do usuario
      */
     public function getNomeUsuario(): string {
-        return $this->sNomeUsuario;
+        return $this->sUserName;
     }
 
     /**

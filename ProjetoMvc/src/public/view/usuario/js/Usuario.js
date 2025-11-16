@@ -12,8 +12,8 @@ function realizarRequisicaoAjaxListarUsuarios(){
             usuarios.forEach(usuario => {
                 html += `
                     <tr>
-                        <td>${usuario.nome}</td>
-                        <td>${usuario.tipo}</td>
+                        <td>${usuario.username}</td>
+                        <td>${usuario.tipo_usuario}</td>
                          <td>
                             <button class="btn-editar" data-id="${usuario.id}">Editar</button>
                         </td>

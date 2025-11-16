@@ -15,12 +15,14 @@ class Usuario{
 
     public $iIdUsuario;
     public $sUserName;
+    private $sSenha;
     public $iTipoUsuario;
     private $iStatus;
 
     public function __construct(string $sUserName,int $iTipoUsuario)
     {
         $this->sUserName = $sUserName;
+        $this->sSenha = 'a';
         $this->iTipoUsuario = $iTipoUsuario;
         $this->iStatus = BooleanEnum::SIM;
     }
@@ -133,7 +135,7 @@ class Usuario{
      * @return Usuario
      */
     public static function createFromArray(array $aDados): Usuario {
-        $oUsuario = new Usuario($aDados['username'],intval($aDados['admin']));
+        $oUsuario = new Usuario($aDados['username'],intval($aDados['tipo_usuario']));
         $oUsuario->setId($aDados['id']);
         return $oUsuario;
     }

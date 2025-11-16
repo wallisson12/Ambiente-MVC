@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Enum tipo usuario
+ * Class TipoUsuarioEnum
  */
 class TipoUsuarioEnum{
     public const Administrador = 2;

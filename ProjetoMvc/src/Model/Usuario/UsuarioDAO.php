@@ -44,7 +44,7 @@ class UsuarioDAO implements UsuarioInterfaceDAO{
      */
     public function findByFilters(UsuarioFilters $oUsuarioFilters): array {
         $sSql = "SELECT * FROM users usr 
-                 Where usr.username IS NOT NULL AND usr.status = ? ORDER BY usr.username";
+                 Where usr.status = ? ORDER BY usr.username";
 
         $aParam = [BooleanEnum::SIM];
 
@@ -59,8 +59,8 @@ class UsuarioDAO implements UsuarioInterfaceDAO{
             $oUsuario = Usuario::createFromArray($aUsuario);
             $aUsuariosObj[] = [
                     'id' => $oUsuario->getId(),
-                    'nome' => $oUsuario->getNomeUsuario(), 
-                    'tipo' => $oUsuario->getTipoUsuario(),
+                    'username' => $oUsuario->getNomeUsuario(), 
+                    'tipo_usuario' => $oUsuario->getTipoUsuario(),
                     'status' => $oUsuario->getStatusUsuario()
             ];
         }
@@ -75,8 +75,8 @@ class UsuarioDAO implements UsuarioInterfaceDAO{
      * @return void
      */
     public function cadastrar(Usuario $oUsuario): void {
-        $sSql = "INSERT INTO users (username,admin,status) VALUES (?,?,?)";
-        $aParam = [$oUsuario->getNomeUsuario(),$oUsuario->getTipoUsuario(),$oUsuario->getStatusUsuario()];
+        $sSql = "INSERT INTO users (username,senha,tipo_usuario,status) VALUES (?,?,?,?)";
+        $aParam = [$oUsuario->getNomeUsuario(),'a',$oUsuario->getTipoUsuario(),$oUsuario->getStatusUsuario()];
 
         try{
             DataBase::getInstance()->execute($sSql,$aParam);
@@ -92,7 +92,7 @@ class UsuarioDAO implements UsuarioInterfaceDAO{
      */
     public function atualizar(Usuario $oUsuario): void {
         $sSql = "UPDATE users usr
-                 SET usr.username = ?, usr.admin = ?
+                 SET usr.username = ?, usr.tipo_usuario = ?
                  WHERE usr.id = ?";
         $aParam = [$oUsuario->getNomeUsuario(),$oUsuario->getTipoUsuario(),$oUsuario->getId()];
 
