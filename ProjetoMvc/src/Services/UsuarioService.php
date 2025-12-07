@@ -2,6 +2,7 @@
 
 use Model\Usuario\Usuario;
 use Model\Usuario\UsuarioDAO;
+use Model\Usuario\UsuaarioFilters;
 
 /**
  * Classe responsavel por centralizar as regras e 
@@ -9,6 +10,7 @@ use Model\Usuario\UsuarioDAO;
  */
 class UsuarioService{
 
+    /** @var UsuarioDAO $oUsuarioDAO*/
     private $oUsuarioDAO;
 
     /**
@@ -59,6 +61,18 @@ class UsuarioService{
         }
         $oUsuario = Usuario::createFromArray($aDados);
         $oUsuario->atualizar();
+    }
+
+
+    /**
+     * Responsavel por realizar a listagem dos usuarios
+     * 
+     * @param UsuarioFilters $oUsuarioFilters
+     * @return array
+     */
+    public function listarUsuarios(UsuarioFilters $oUsuarioFilter) : array {
+        $aoUsuarios = $this->oUsuarioDAO->findByFilters($oUsuarioFilter);
+        return $aoUsuarios;
     }
 
     /**

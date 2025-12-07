@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Entidade FIltro Uusario 
+ * Entidade Filtro Usuario 
  */
 class UsuarioFilters{
 

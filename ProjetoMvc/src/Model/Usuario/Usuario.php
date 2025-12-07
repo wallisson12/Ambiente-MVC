@@ -13,12 +13,25 @@ require_once 'src/Model/Usuario/UsuarioDAO.php';
  */
 class Usuario{
 
+    /** @var int $iIdUsuario */
     public $iIdUsuario;
+
+    /** @var string $sUserName */
     public $sUserName;
+
+    /** @var string $sSenha */
     private $sSenha;
+
+    /** @var int $iTipoUsuario */
     public $iTipoUsuario;
+
+    /** @var int $iStatus */
     private $iStatus;
 
+
+    /**
+     * Construtor
+     */
     public function __construct(string $sUserName,int $iTipoUsuario)
     {
         $this->sUserName = $sUserName;
@@ -42,7 +55,7 @@ class Usuario{
      * @return string
      */
     public function getNomeUsuario(): string {
-        return $this->sUserName;
+        return $this->sUserName ?? '';
     }
     
     /**
@@ -50,7 +63,7 @@ class Usuario{
      * 
      * @return int
      */
-    public function getTipoUsuario(): int {
+    public function getTipoUsuario(): ?int {
         return $this->iTipoUsuario;
     }
 
@@ -59,7 +72,7 @@ class Usuario{
      * 
      * @return int
      */
-    public function getStatusUsuario(): int {
+    public function getStatusUsuario(): ?int {
         return $this->iStatus;
     }
 

@@ -3,12 +3,15 @@
 namespace src\config;
 
 //Uma forma de nao precisar passar o caminho
+
+use LoginController;
 use src\controllers\HomeController;
 use src\controllers\UsuarioController;
 
 //Inclui o arquivo
 require_once 'src/controllers/HomeController.php';
 require_once 'src/controllers/UsuarioController.php';
+require_once 'src/controllers/LoginController.php';
 
 $aDados = array_merge($_POST,$_GET);
 routeToController($aDados);
@@ -26,7 +29,7 @@ function routeToController(array $aDados){
 	//Remove as tags html e php da variavel
 	$aUrl = !empty($aUrl) ? strip_tags($aUrl) : '';
 
-	$aUrl = !empty($aUrl) ? $aUrl : 'home/index' ;
+	$aUrl = !empty($aUrl) ? $aUrl : 'login/index' ;
 
 	$aUrl = array_filter(explode('/',$aUrl));
 
@@ -51,7 +54,7 @@ function carregaControllerMetodo(?string $sController, ?string $sMetodo,$aDados)
 		$oController->$sMetodo($aDados);
 		return;
 	}
-	$oController = new HomeController();
+	$oController = new LoginController();
 	$oController->index($aDados);
 }
 

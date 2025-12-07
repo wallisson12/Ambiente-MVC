@@ -23,6 +23,7 @@ require_once 'src/Utils/CarregarViews/View.php';
  */
 class UsuarioController {
 
+    /** @var UsuarioServie $oUsuarioService */
     private $oUsuarioService;
 
     /**
@@ -99,8 +100,8 @@ class UsuarioController {
     public function listarAjax(array $aDados = []){
         try {
             $oUsuarioFilters = UsuarioFilters::creatFromArray($aDados);
-            $aUsuarios = DAOFactory::getDAOFactory()->getUsuarioDAO()->findByFilters($oUsuarioFilters);
-            echo json_encode($aUsuarios);
+            $aoUsuarios = $this->oUsuarioService->listarUsuarios($oUsuarioFilters);
+            echo json_encode($aoUsuarios);
          } catch (Exception $oException) {
             echo json_encode([
                 "error" => true,
