@@ -37,6 +37,29 @@ class UsuarioDAO implements UsuarioInterfaceDAO{
         return Usuario::createFromArray($aaUsuario[0]);;
     }
 
+
+    /**
+     * Busca um usuario por seu username
+     * 
+     * @param string $sUserName
+     */
+    public function findByUserName(string $sUserName) : Usuario {
+        $sSql = "SELECT * FROM users usr WHERE usr.username = ? AND usr.status = ?";
+        $aParam = [$sUserName,BooleanEnum::SIM];
+
+        try{
+            $aaUsuario = DataBase::getInstance()->query($sSql,$aParam);
+        }catch (PDOException $oException){
+            throw new PDOException("Ocorreu um erro ao buscar o usuario com username: {$sUserName}");
+        }
+
+        if(empty($aaUsuario)){
+            throw new Exception("Não existe nemhum usuario com esse username: {$sUserName}");
+        }
+
+        return Usuario::createFromArray($aaUsuario[0]);;
+    }
+
     /**
      * Responsavel por retornar os usuarios baseado nos filtros passados
      * 
@@ -76,7 +99,7 @@ class UsuarioDAO implements UsuarioInterfaceDAO{
      */
     public function cadastrar(Usuario $oUsuario): void {
         $sSql = "INSERT INTO users (username,senha,tipo_usuario,status) VALUES (?,?,?,?)";
-        $aParam = [$oUsuario->getNomeUsuario(),'a',$oUsuario->getTipoUsuario(),$oUsuario->getStatusUsuario()];
+        $aParam = [$oUsuario->getNomeUsuario(),$oUsuario->getSenhaCriptografada(),$oUsuario->getTipoUsuario(),$oUsuario->getStatusUsuario()];
 
         try{
             DataBase::getInstance()->execute($sSql,$aParam);

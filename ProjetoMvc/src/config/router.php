@@ -4,9 +4,9 @@ namespace src\config;
 
 //Uma forma de nao precisar passar o caminho
 
-use LoginController;
 use src\controllers\HomeController;
 use src\controllers\UsuarioController;
+use src\controllers\LoginController;
 
 //Inclui o arquivo
 require_once 'src/controllers/HomeController.php';

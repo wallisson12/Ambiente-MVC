@@ -35,7 +35,6 @@ class Usuario{
     public function __construct(string $sUserName,int $iTipoUsuario)
     {
         $this->sUserName = $sUserName;
-        $this->sSenha = 'a';
         $this->iTipoUsuario = $iTipoUsuario;
         $this->iStatus = BooleanEnum::SIM;
     }
@@ -105,6 +104,22 @@ class Usuario{
 
 
     /**
+     * Retorna a senha criptografada
+     */
+    public function getSenhaCriptografada(): string {
+        return $this->sSenha;
+    }
+
+    /**
+     * Define a senha do usuario
+     * 
+     * @param string $sSenha
+     */
+    private function setSenha(string $sSenha) : void{
+        $this->sSenha = $sSenha;
+    }
+
+    /**
      * Define o status do usuario, (deletado ou nao)
      * 
      * @param int $iStatus
@@ -150,6 +165,7 @@ class Usuario{
     public static function createFromArray(array $aDados): Usuario {
         $oUsuario = new Usuario($aDados['username'],intval($aDados['tipo_usuario']));
         $oUsuario->setId($aDados['id']);
+        $oUsuario->setSenha($aDados['senha']);
         return $oUsuario;
     }
 }

@@ -29,6 +29,7 @@ class UsuarioService{
      */
     public function cadastrarNovoUsuario(array $aDados = []) : void {
         $this->validarDadosCadastroUsuario($aDados);
+        $aDados['senha'] = password_hash($aDados['senha'],PASSWORD_DEFAULT);
         $oUsuario = Usuario::createFromArray($aDados);
         $oUsuario->cadastrar();
     }
@@ -63,6 +64,20 @@ class UsuarioService{
         $oUsuario->atualizar();
     }
 
+    /**
+     * Responsavel por autenticar os dados de login
+     * 
+     * @param string $sUserName
+     * @param string $sSenha
+     */
+    public function autenticarUsuario(string $sUserName, string $sSenha){
+        $oUsuario = $this->oUsuarioDAO->findByUserName($sUserName);
+        if(!password_verify($sSenha,$oUsuario->getSenhaCriptografada())){
+            throw new InvalidArgumentException("Usuario ou Senha Inválidos!");
+        }
+
+        //Salva na sessao (Criar uma classe para ter essa responsabilidade de salvar e remover)
+    }
 
     /**
      * Responsavel por realizar a listagem dos usuarios
@@ -104,6 +119,10 @@ class UsuarioService{
 
             if(empty($aDados['tipo_usuario'])){
                 throw new InvalidArgumentException("O tipo de usuario é obrigatorio");
+            }
+
+            if(empty($aDados['senha'])){
+                throw new InvalidArgumentException("A senha é obrigatoria");
             }
 
         }
